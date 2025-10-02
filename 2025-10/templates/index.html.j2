@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ site_title }}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 3rem; }
+    .card { padding: 1.5rem; border: 1px solid #ddd; border-radius: 12px; }
+    h1 { margin: 0 0 .5rem 0; }
+    small { color: #666; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>{{ site_title }}</h1>
+    <p>{{ site_message }}</p>
+    <small>Time: {{ ansible_date_time.iso8601 }}</small>
+  </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+---
+- hosts: webservers
+  become: true
+  vars:
+    site_title: "Hello from Ansible!"
+    site_message: "Deployed by Ansible on {{ ansible_facts['hostname'] }}"
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Ensure nginx started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Deploy index.html from template
+      template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify: Reload nginx
+
+  handlers:
+    - name: Reload nginx
+      service:
+        name: nginx
+        state: reloaded

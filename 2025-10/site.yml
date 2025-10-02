@@ -1,0 +1,4 @@
+---
+- import_playbook: web_init.yml
+- import_playbook: user_manage.yml
+- import_playbook: nginx_setup.yml
