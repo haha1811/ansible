@@ -1,0 +1,24 @@
+---
+- name: 安裝並啟用 SSH Server
+  hosts: ftpservers
+  become: yes  # 需要 sudo 權限
+
+  tasks:
+    - name: 更新 apt 套件快取
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: 安裝 OpenSSH Server 及其他套件
+      apt:
+        name: 
+        - openssh-server
+        - iputils-ping
+        - vim
+        state: present
+
+    - name: 確認 SSH 服務已啟動且開機自動啟動
+      service:
+        name: ssh
+        state: started
+        enabled: yes

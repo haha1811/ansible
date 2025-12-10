@@ -1,0 +1,12 @@
+---
+- name: Reload HAProxy
+  service:
+    name: haproxy
+    state: reloaded
+
+- name: Restart keepalived
+  service:
+    name: keepalived
+    state: restarted
+    enabled: yes
+

@@ -1,0 +1,9 @@
+---
+- import_playbook: roles/common/base_init.yml
+- import_playbook: roles/ap/ap_init.yml
+
+- name: Init Load Balancers
+  hosts: lbservers
+  become: yes
+  roles:
+    - lb

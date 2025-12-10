@@ -1,0 +1,8 @@
+---
+- name: Init Load Balancer Servers (using lb role)
+  hosts: lbservers
+  become: yes
+
+  roles:
+    - lb
+

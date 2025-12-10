@@ -1,0 +1,5 @@
+---
+- import_tasks: init.yml
+- import_tasks: ssl.yml
+- import_tasks: haproxy.yml
+- import_tasks: keepalived.yml

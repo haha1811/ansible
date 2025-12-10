@@ -1,0 +1,18 @@
+---
+haproxy_cert_src: site.pem
+haproxy_cert_dir: /etc/haproxy/certs
+haproxy_cert_file: site.pem
+
+haproxy_maxconn: 2000
+haproxy_timeout_connect: 5000
+haproxy_timeout_client: 30000
+haproxy_timeout_server: 30000
+
+haproxy_backends:
+  - name: ap01
+    address: 10.100.2.21
+    port: 80
+  - name: ap02
+    address: 10.100.2.22
+    port: 80
+

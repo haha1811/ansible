@@ -1,0 +1,29 @@
+---
+- name: Install SSH Server
+  hosts: apservers:lbservers
+  become: yes
+
+  tasks:
+    - name: apt update & install
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: install OPENSSH Server & Other apt
+      apt:
+        name:
+          - vim
+          - net-tools
+          - iputils-ping
+          - openssh-server
+        state: present
+
+    - name: Set timezone to Asia/Taipei
+      timezone:
+        name: Asia/Taipei
+
+    - name: Set hostname
+      service:
+        name: ssh
+        state: started
+        enabled: yes

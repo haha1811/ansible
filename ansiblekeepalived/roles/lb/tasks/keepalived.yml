@@ -1,0 +1,19 @@
+---
+- name: Ensure keepalived config directory exists
+  file:
+    path: /etc/keepalived
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy keepalived.conf
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: "0644"
+    validate: "keepalived -t -f %s"
+  notify: Restart keepalived
+

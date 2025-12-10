@@ -1,4 +1,4 @@
-- hosts: ftpservers
+- hosts: lbservers:apservers
   become: true
   tasks:
     - name: Create deploy user
@@ -9,16 +9,11 @@
         create_home: yes
         state: present
 
-    - name: Remove broken sudoers snippet if present
-      file:
-        path: /etc/sudoers.d/90-deploy
-        state: absent
-
     - name: Allow deploy to sudo without password (validated)
       copy:
         dest: /etc/sudoers.d/90-deploy
         content: "deploy ALL=(ALL) NOPASSWD:ALL\n"
         owner: root
         group: root
-        mode: '0440'
-        validate: '/usr/sbin/visudo -cf %s'
+        mode: "0440"
+        validate: "/usr/sbin/visudo -cf %s"

@@ -1,0 +1,61 @@
+---
+- name: Init Application Servers
+  hosts: apservers
+  become: yes
+
+  tasks:
+    - name: Ensure SSH is enabled
+      service:
+        name: ssh
+        state: started
+        enabled: yes
+
+    - name: Set hostname
+      hostname:
+        name: "{{ hostname }}"
+      when: hostname is defined
+
+    - name: Update /etc/hosts hostname mapping
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.1\.1'
+        line: "127.0.1.1 {{ hostname }}"
+      when: hostname is defined
+
+    ## 安裝 Apache2
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Enable Apache2 service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    ## 安裝 PHP（含常用模組）
+    - name: Install PHP and common modules
+      apt:
+        name:
+          - php
+          - libapache2-mod-php
+          - php-cli
+          - php-common
+          - php-mbstring
+          - php-xml
+          - php-curl
+          - php-zip
+        state: present
+
+    ## 啟用 Apache PHP 模組
+    - name: Enable Apache PHP module
+      command: a2enmod php*
+      notify: Restart Apache2
+
+  handlers:
+    - name: Restart Apache2
+      service:
+        name: apache2
+        state: restarted

@@ -1,0 +1,35 @@
+---
+- name: Ensure SSH is enabled
+  service:
+    name: ssh
+    state: started
+    enabled: yes
+
+- name: Set hostname
+  hostname:
+    name: "{{ hostname }}"
+  when: hostname is defined
+
+- name: Update /etc/hosts hostname mapping
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 {{ hostname }}"
+  when: hostname is defined
+
+- name: Install HAProxy & Keepalived
+  apt:
+    name:
+      - haproxy
+      - keepalived
+    state: present
+
+- name: Enable HAProxy & Keepalived
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - haproxy
+    - keepalived
+

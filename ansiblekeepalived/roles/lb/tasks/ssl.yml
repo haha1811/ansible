@@ -1,0 +1,18 @@
+---
+- name: Ensure HAProxy cert directory exists
+  file:
+    path: "{{ haproxy_cert_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy HAProxy certificate (PEM)
+  copy:
+    src: "{{ haproxy_cert_src }}"                 # 會從 roles/lb/files/site.pem 找
+    dest: "{{ haproxy_cert_dir }}/{{ haproxy_cert_file }}"
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Reload HAProxy
+
